@@ -157,9 +157,18 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-const port = 8080;
+app.get('/status', (req, res) => {
+  res.send(JSON.stringify({
+    clients: clients.length,
+    victims: victims.length,
+    attacker: !!attacker.id
+  }));
+});
+
+const port = process.env['PORT'] || 8080;
+
 app.listen(port, () => {
   extIP.get().then((ip) => {
-    log.tell("Server started on ws://" + ip + "/entry");
+    log.tell("Server started on port: " + port, colors.green);
   });
 });
